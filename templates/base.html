@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="{{ 'hi' if current_language == 'Hindi' else 'en' }}">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#08070c">
+<title>{% block title %}NutriFood Health{% endblock %}</title>
+<link rel="preconnect" href="https://cdnjs.cloudflare.com">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
+{% block head %}{% endblock %}
+</head>
+<body class="{% block body_class %}app-body{% endblock %}" data-language="{{ current_language }}">
+{% if session.get('username') %}
+<header class="topbar">
+  <div class="topbar-left">
+    <button class="icon-button" id="drawer-toggle" aria-label="Open menu"><i class="fa-solid fa-bars"></i></button>
+    <a href="{{ url_for('dashboard') }}" class="brand"><span class="brand-mark"><i class="fa-solid fa-leaf"></i></span><span>NutriFood</span><span>Health</span></a>
+  </div>
+  <div class="topbar-actions">
+    <div class="global-search" id="global-search">
+      <i class="fa-solid fa-magnifying-glass"></i>
+      <input id="global-search-input" type="search" autocomplete="off" data-i18n-placeholder="Search NutriFood" placeholder="Search NutriFood" aria-label="Search NutriFood">
+      <div class="search-results" id="global-search-results"></div>
+    </div>
+    <button class="lang-toggle" id="lang-toggle" type="button" aria-label="Change language"><i class="fa-solid fa-language"></i> <span id="lang-label">{{ language_label }}</span></button>
+    <a href="{{ url_for('personal_info') }}" class="user-pill" title="Edit profile"><i class="fa-regular fa-user"></i> <span>{{ session.get('username') }}</span></a>
+  </div>
+</header>
+<div class="drawer-overlay" id="drawer-overlay"></div>
+<aside class="side-drawer" id="side-drawer">
+  <div class="drawer-head"><a href="{{ url_for('dashboard') }}" class="brand"><span class="brand-mark"><i class="fa-solid fa-leaf"></i></span><span>NutriFood</span><span>Health</span></a><button class="icon-button" id="drawer-close" aria-label="Close menu"><i class="fa-solid fa-xmark"></i></button></div>
+  <div class="drawer-profile"><div class="avatar"><i class="fa-solid fa-user"></i></div><div><b>{{ session.get('username') }}</b><small data-i18n="Personal health space">Personal health space</small></div></div>
+  <nav class="drawer-nav">
+    <a href="{{ url_for('dashboard') }}"><i class="fa-solid fa-table-cells-large"></i><span data-i18n="Dashboard">Dashboard</span></a>
+    <a href="{{ url_for('meal_scan') }}"><i class="fa-solid fa-camera"></i><span data-i18n="Meal Scan">Meal Scan</span></a>
+    <a href="{{ url_for('packed_food') }}"><i class="fa-solid fa-box-open"></i><span data-i18n="Packed Food">Packed Food</span></a>
+    <a href="{{ url_for('compare_food') }}"><i class="fa-solid fa-code-compare"></i><span data-i18n="Compare Products">Compare Products</span></a>
+    <a href="{{ url_for('fitness_scale') }}"><i class="fa-solid fa-dumbbell"></i><span data-i18n="Fitness & Scale">Fitness & Scale</span></a>
+    <a href="{{ url_for('diary') }}"><i class="fa-solid fa-book-medical"></i><span data-i18n="Diary">Diary</span></a>
+    <a href="{{ url_for('allergy_check') }}"><i class="fa-solid fa-shield-heart"></i><span data-i18n="Allergy Alert">Allergy Alert</span></a>
+    <a href="{{ url_for('personal_info') }}"><i class="fa-solid fa-user-pen"></i><span data-i18n="Edit Profile">Edit Profile</span></a>
+    {% if session.get('username','').lower() == 'admin' %}
+    <a href="{{ url_for('admin_stats') }}"><i class="fa-solid fa-chart-pie"></i><span data-i18n="Admin Stats">Admin Stats</span></a>
+    {% endif %}
+  </nav>
+  <a href="{{ url_for('logout') }}" class="drawer-logout"><i class="fa-solid fa-right-from-bracket"></i><span data-i18n="Log out">Log out</span></a>
+</aside>
+{% endif %}
+<main class="app-main">
+{% with messages = get_flashed_messages(with_categories=true) %}
+{% if messages %}
+<div class="toast-stack">{% for category, message in messages %}<div class="toast {{ category }}"><i class="fa-solid {{ 'fa-circle-check' if category=='success' else 'fa-circle-exclamation' }}"></i><span>{{ message }}</span></div>{% endfor %}</div>
+{% endif %}
+{% endwith %}
+{% block content %}{% endblock %}
+</main>
+{% block chat %}
+{% if session.get('username') %}
+<div class="chat-widget" data-context="{% if request.path == '/meal-scan' %}Meal Scan and food nutrition{% elif request.path == '/packed-food' %}Packaged food labels and food safety{% elif request.path == '/compare-food' %}Comparing packaged food products{% elif request.path == '/fitness-scale' %}Fitness, BMI, calories, water, steps and workouts{% elif request.path == '/diary' %}Diary, food history and health trends{% elif request.path == '/allergy-check' %}Allergy alerts and ingredient matching{% else %}General nutrition and fitness{% endif %}">
+  <button class="chat-fab" id="chat-fab" aria-label="Open assistant"><i class="fa-solid fa-comments"></i></button>
+  <section class="chat-panel" id="chat-panel" aria-label="Health assistant">
+    <div class="chat-head">
+      <div><b data-i18n="Health Assistant">Health Assistant</b><small data-i18n="Ask questions about this page">Ask questions about this page</small></div>
+      <div class="chat-head-actions"><button class="icon-button" id="chat-stop-speech" title="Stop voice"><i class="fa-solid fa-volume-xmark"></i></button><button class="icon-button" id="chat-close" aria-label="Close"><i class="fa-solid fa-xmark"></i></button></div>
+    </div>
+    <div class="chat-messages" id="chat-messages"><div class="chat-bubble bot" data-i18n="Hello. Ask me a question about food, nutrition, fitness or safety.">Hello. Ask me a question about food, nutrition, fitness or safety.</div></div>
+    <div class="chat-attachment" id="chat-attachment-preview"></div>
+    <form id="chat-form" class="chat-form" enctype="multipart/form-data">
+      <input type="file" id="chat-image" accept="image/*" hidden>
+      <button type="button" class="chat-tool" id="chat-image-btn" title="Attach image"><i class="fa-regular fa-image"></i></button>
+      <button type="button" class="chat-tool" id="chat-mic-btn" title="Voice question"><i class="fa-solid fa-microphone"></i></button>
+      <input id="chat-input" maxlength="1000" data-i18n-placeholder="Type your question..." placeholder="Type your question..." autocomplete="off">
+      <button class="chat-send" aria-label="Send"><i class="fa-solid fa-paper-plane"></i></button>
+    </form>
+  </section>
+</div>
+{% endif %}
+{% endblock %}
+<script src="{{ url_for('static', filename='js/app.js') }}"></script>
+<script src="{{ url_for('static', filename='js/chatbot.js') }}"></script>
+<script src="{{ url_for('static', filename='js/translator.js') }}"></script>
+{% block scripts %}{% endblock %}
+</body>
+</html>

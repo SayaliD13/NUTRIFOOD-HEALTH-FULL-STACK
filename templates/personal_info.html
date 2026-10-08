@@ -1,0 +1,14 @@
+{% extends "base.html" %}{% block title %}Profile — NutriFood Health{% endblock %}
+{% block content %}<div class="page-wrap narrow"><div class="page-heading"><div><span class="eyebrow">PROFILE</span><h1>Personal information</h1><p>Keep your profile current so food alerts and fitness recommendations stay relevant.</p></div><a class="ghost-button" href="{{ url_for('dashboard') }}"><i class="fa-solid fa-arrow-left"></i> Dashboard</a></div>
+<div class="panel profile-panel"><form action="{{ url_for('personal_info') }}" method="POST" enctype="multipart/form-data">
+<div class="form-grid two"><div><label>Age</label><input type="number" name="age" min="1" max="120" value="{{ info.age if info else '' }}"></div><div><label>Gender</label><select name="gender"><option value="">Select</option>{% for x in gender_list %}<option {{ 'selected' if info and info.gender==x else '' }}>{{ x }}</option>{% endfor %}</select></div>
+<div><label>Weight (kg)</label><input type="number" step="0.1" name="weight" min="1" value="{{ info.weight if info else '' }}"></div><div><label>Height (cm)</label><input type="number" step="0.1" name="height" min="30" value="{{ info.height if info else '' }}"></div>
+<div class="full"><label>Activity level</label><select name="activity_level"><option value="">Select</option>{% for x in activity_list %}<option {{ 'selected' if info and info.activity_level==x else '' }}>{{ x }}</option>{% endfor %}</select></div>
+<div><label>Diet type</label><select name="diet_type"><option value="">Select</option>{% for x in diet_list %}<option {{ 'selected' if info and info.diet_type==x else '' }}>{{ x }}</option>{% endfor %}</select></div>
+<div><label>Primary goal</label><select name="goal_type"><option value="">Select</option>{% for x in goal_list %}<option {{ 'selected' if info and info.goal_type==x else '' }}>{{ x }}</option>{% endfor %}</select></div>
+<div class="full"><label>Food allergies</label><input name="allergies" value="{{ info.allergies if info else '' }}" placeholder="Example: peanut, milk, egg, shellfish"></div>
+<div><label>Target weight (kg)</label><input type="number" step="0.1" name="target_weight" value="{{ info.target_weight if info else '' }}"></div>
+<div><label>Workout style</label><select name="workout_style"><option value="">Select</option>{% for x in workout_list %}<option {{ 'selected' if info and info.workout_style==x else '' }}>{{ x }}</option>{% endfor %}</select></div>
+<div><label>Daily step target</label><input type="number" name="daily_steps_goal" min="0" value="{{ info.daily_steps_goal if info else '' }}"></div>
+<div><label>Health document (optional)</label><input type="file" name="medical_report" accept="image/*,.pdf"></div></div>
+<div class="form-actions"><a class="ghost-button" href="{{ url_for('dashboard') }}">Cancel</a><button class="primary-button"><i class="fa-solid fa-floppy-disk"></i> Save profile</button></div></form></div></div>{% endblock %}

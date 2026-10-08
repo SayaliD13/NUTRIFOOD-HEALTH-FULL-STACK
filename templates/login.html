@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><meta name="theme-color" content="#08070c"><title>NutriFood Health — Sign in</title>
+<link rel="stylesheet" href="{{ url_for('static',filename='css/style.css') }}"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"></head>
+<body class="auth-page"><div class="auth-shell">
+<section class="auth-visual"><a class="auth-brand" href="{{ url_for('login') }}"><span class="brand-mark"><i class="fa-solid fa-leaf"></i></span><span>NutriFood</span><span>Health</span></a>
+<div class="auth-visual-copy"><span class="eyebrow">PERSONAL HEALTH WORKSPACE</span><h1>Understand your food.<br><strong>Track your health.</strong><br>Make better choices.</h1><p>A focused workspace for food analysis, product checks, fitness planning and personal health history.</p>
+<div class="visual-stats"><span><i class="fa-solid fa-camera"></i> Food analysis</span><span><i class="fa-solid fa-chart-line"></i> Health trends</span><span><i class="fa-solid fa-shield-heart"></i> Safety checks</span></div></div></section>
+<section class="auth-card"><div class="mobile-brand auth-brand"><span class="brand-mark"><i class="fa-solid fa-leaf"></i></span><span>NutriFood</span><span>Health</span></div>
+<div class="eyebrow">WELCOME BACK</div><h2>Sign in</h2><p class="auth-sub">Continue to your personal health workspace.</p>
+{% with messages=get_flashed_messages(with_categories=true) %}{% for category,message in messages %}<div class="toast {{ category }}"><i class="fa-solid {{ 'fa-circle-check' if category=='success' else 'fa-circle-exclamation' }}"></i>{{ message }}</div>{% endfor %}{% endwith %}
+<form method="POST" novalidate><label>Username</label><div class="input-icon"><i class="fa-regular fa-user"></i><input name="username" required autocomplete="username" placeholder="Enter your username"></div>
+<label>Password</label><div class="input-icon"><i class="fa-solid fa-lock"></i><input type="password" name="password" required autocomplete="current-password" placeholder="Enter your password"></div>
+<button class="auth-button"><i class="fa-solid fa-arrow-right-to-bracket"></i> Sign in</button></form>
+<div class="auth-links"><a href="{{ url_for('forgot_password') }}">Forgot password?</a><span>New here? <a href="{{ url_for('register') }}">Create an account</a></span></div></section></div></body></html>

@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>NutriFood Health — Create account</title>
+<link rel="stylesheet" href="{{ url_for('static',filename='css/style.css') }}"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"></head>
+<body class="auth-page"><div class="auth-shell single-auth"><section class="auth-card"><a class="auth-brand" href="{{ url_for('login') }}"><span class="brand-mark"><i class="fa-solid fa-leaf"></i></span><span>NutriFood</span><span>Health</span></a>
+<div class="eyebrow">GET STARTED</div><h2>Create your account</h2><p class="auth-sub">Set up your personal health workspace.</p>
+{% with messages=get_flashed_messages(with_categories=true) %}{% for category,message in messages %}<div class="toast {{ category }}">{{ message }}</div>{% endfor %}{% endwith %}
+<form method="POST"><label>Username</label><input name="username" minlength="3" required autocomplete="username" placeholder="Choose a username">
+<label>Password</label><input type="password" name="password" minlength="4" required autocomplete="new-password" placeholder="Create a password">
+<label>Security question</label><select name="security_question" required><option value="food">What is your favorite dish?</option><option value="pet">What was your first pet's name?</option><option value="city">In which city were you born?</option></select>
+<label>Answer</label><input name="security_answer" required placeholder="Your answer">
+<button class="auth-button"><i class="fa-solid fa-user-plus"></i> Create account</button></form>
+<div class="auth-links"><span>Already have an account? <a href="{{ url_for('login') }}">Sign in</a></span></div></section></div></body></html>

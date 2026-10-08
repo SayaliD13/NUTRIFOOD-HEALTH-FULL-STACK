@@ -1,0 +1,41 @@
+<div class="side-drawer" id="side-drawer">
+    <button class="drawer-close-btn" id="drawer-close-btn">&times;</button>
+    <h3 style="clear:both;">Account</h3>
+
+    <form action="/update-profile" method="POST" style="margin-top: 10px;">
+        <div class="small-form-group">
+            <label>Username</label>
+            <input type="text" name="new_username" value="{{ session.get('username', '') }}" required>
+        </div>
+        <div class="small-form-group">
+            <label>New Password</label>
+            <input type="password" name="new_password" placeholder="Leave blank to keep current">
+        </div>
+        <button type="submit" class="btn-secondary small-btn" style="width:100%; margin-top: 6px;">Save Changes</button>
+    </form>
+
+    <a href="/personal-info" class="btn-secondary small-btn" style="display:block; text-align:center; margin-top: 10px; text-decoration:none;">Edit Personal Info</a>
+
+    <div style="margin-top: 20px; border-top: 1px solid #211c33; padding-top: 14px;">
+        <h3 style="margin-bottom: 10px;">Recent Activity</h3>
+        {% if history_data %}
+            <table class="history-table">
+                <tbody>
+                    {% for item in history_data %}
+                    <tr>
+                        <td><img src="{{ item.image_path }}" class="thumb-img" alt="entry"></td>
+                        <td><b>{{ item.food_name }}</b></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <a href="/diary" style="font-size: 12px; color: #a270ff; text-decoration: none;">View All in Diary</a>
+        {% else %}
+            <p style="font-size: 13px; color: #a499b7;">No activity yet.</p>
+        {% endif %}
+    </div>
+
+    <div style="margin-top: 20px; border-top: 1px solid #211c33; padding-top: 12px; text-align: center;">
+        <a href="/logout" style="color: #ff6b6b; text-decoration: none; font-size: 14px; font-weight: bold;">Logout</a>
+    </div>
+</div>

@@ -1,0 +1,27 @@
+services:
+  - type: web
+    name: nutrifood-health
+    runtime: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn app:app
+    envVars:
+      - key: GEMINI_API_KEY
+        sync: false
+      - key: USDA_API_KEY
+        sync: false
+      - key: SECRET_KEY
+        generateValue: true
+      - key: COOKIE_SECURE
+        value: "1"
+      - key: GEMINI_MODEL
+        value: gemini-3.8-flash
+      - key: GEMINI_FALLBACK_MODEL
+        value: gemini-3.5-flash-lite
+      - key: GEMINI_TTS_MODEL
+        value: gemini-3.8-flash-tts
+      - key: GEMINI_TTS_FALLBACK_MODEL
+        value: gemini-3.8-flash-lite-tts
+      - key: GEMINI_TRANSCRIBE_MODEL
+        value: gemini-3.5-transcribe
+      - key: OPENFOODFACTS_USER_AGENT
+        value: NutriFood-Health/1.0

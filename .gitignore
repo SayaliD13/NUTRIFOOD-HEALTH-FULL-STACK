@@ -1,0 +1,22 @@
+.env
+
+# Virtual environment - never upload this, each machine builds its own
+.venv/
+venv/
+
+# Python cache
+__pycache__/
+*.pyc
+
+# Local database and uploaded photos - should not be in git
+database_files/*.db
+static/uploads/*.jpg
+static/uploads/*.jpeg
+static/uploads/*.png
+
+# Raw training dataset - way too large for GitHub (thousands of images)
+dataset_files/dataset/
+
+# OS junk files
+.DS_Store
+Thumbs.db
